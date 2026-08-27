@@ -1,4 +1,4 @@
-const SERVER_URL="https://cards-29-server.onrender.com";
+const SERVER_URL="https://cards-29-server-1.onrender.com";
 const state={socket:null,name:"",roomCode:"",roomId:"",room:null,game:null,chat:[],unread:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(window.__toast);window.__toast=setTimeout(()=>e.classList.remove("show"),1900)}
