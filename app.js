@@ -6,7 +6,12 @@ function screen(id){$$(".screen").forEach(x=>x.classList.remove("active"));$("#"
 function emit(ev,data){if(!state.socket?.connected){toast("Not connected to game server");return false}state.socket.emit(ev,data);return true}
 function setConnection(on){$("#connectionDot").className="dot "+(on?"on":"offline");$("#connectionText").textContent=on?"Connected":"Offline"}
 function initials(n){return (n||"?").slice(0,1).toUpperCase()}
-function connect(){if(!window.io)return toast("Socket library failed to load");state.socket=io(SERVER_URL,{transports:["websocket","polling"],reconnection:true});state.socket.on("connect",()=>{setConnection(true);if(state.roomCode&&state.name)emit("session:resume",{roomCode:state.roomCode,name:state.name})});state.socket.on("disconnect",()=>setConnection(false));state.socket.on("connect_error",()=>setConnection(false));
+function connect(){if(!window.io)return toast("Socket library failed to load");state.socket=io(SERVER_URL,{
+  transports:["polling"],
+  upgrade:false,
+  reconnection:true,
+  reconnectionAttempts:Infinity,
+  reconnectionDelay:1000});state.socket.on("connect",()=>{setConnection(true);if(state.roomCode&&state.name)emit("session:resume",{roomCode:state.roomCode,name:state.name})});state.socket.on("disconnect",()=>setConnection(false));state.socket.on("connect_error",()=>setConnection(false));
 state.socket.on("error:message",m=>toast(m.text||"Something went wrong"));
 state.socket.on("room:state",r=>{state.room=r;state.roomId=r.roomId;state.roomCode=r.roomCode;$("#lobbyCode").textContent=r.roomCode;$("#shareCode").textContent=r.roomCode;$("#playerCount").textContent=`${r.players.length} / 4 players`;$("#startGame").disabled=!r.canStart;$("#startGame").style.opacity=r.canStart?"1":".45";$("#playersGrid").innerHTML=r.players.map(p=>`<div class="player"><div class="avatar">${initials(p.name)}</div><div><b>${esc(p.name)} ${p.host?"👑":""}</b><small>Seat ${p.seat} · Team ${p.team}</small></div><span class="status">${p.connected?"● Connected":"● Reconnecting"}</span></div>`).join("");if(r.phase==="lobby")screen("lobby")});
 state.socket.on("game:state",g=>{state.game=g;screen("game");renderGame();if(g.myTurn&&g.phase==="bidding")openBid();else close("bidModal");if(g.myTurn&&g.phase==="trump"&&g.bidderId===g.me)openTrump();else if(g.phase!=="trump")close("trumpModal")});
