@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>29 — The Classic Card Game</title>
+  <meta name="description" content="A premium online Twenty-Nine card game prototype." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <button class="brand" data-screen="home" aria-label="Go to home">
+        <span class="brand-mark">29</span>
+        <span class="brand-copy">
+          <strong>TWENTY-NINE</strong>
+          <small>THE CLASSIC CARD GAME</small>
+        </span>
+      </button>
+      <div class="top-actions">
+        <button class="ghost-btn" data-screen="rules">Rules</button>
+      </div>
+    </header>
+
+    <main>
+      <section id="home" class="screen active">
+        <div class="hero">
+          <div class="hero-glow"></div>
+          <div class="hero-badge">♠ ♥ ♦ ♣</div>
+          <h1>Twenty-<span>Nine</span></h1>
+          <p>Classic trick-taking. Modern multiplayer.</p>
+          <div class="hero-actions">
+            <button class="primary-btn large" id="createBtn">Create Room</button>
+            <button class="secondary-btn large" id="joinBtn">Join Room</button>
+          </div>
+          <div class="feature-row">
+            <div><b>4</b><span>Players</span></div>
+            <div><b>2v2</b><span>Teams</span></div>
+            <div><b>32</b><span>Cards</span></div>
+            <div><b>6</b><span>Win Points</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="create" class="screen">
+        <div class="panel narrow">
+          <button class="back-btn" data-screen="home">← Back</button>
+          <div class="section-heading">
+            <span class="eyebrow">NEW GAME</span>
+            <h2>Create a Room</h2>
+            <p>Set up a private table and invite your friends.</p>
+          </div>
+          <label>Your name</label>
+          <input id="createName" maxlength="18" placeholder="Enter your name" autocomplete="off" />
+          <label>Winning score</label>
+          <select id="winningScore">
+            <option value="6" selected>6 points</option>
+            <option value="8">8 points</option>
+            <option value="10">10 points</option>
+          </select>
+          <button class="primary-btn full" id="confirmCreate">Create Room</button>
+        </div>
+      </section>
+
+      <section id="join" class="screen">
+        <div class="panel narrow">
+          <button class="back-btn" data-screen="home">← Back</button>
+          <div class="section-heading">
+            <span class="eyebrow">PRIVATE TABLE</span>
+            <h2>Join a Room</h2>
+            <p>Enter the code shared by the room host.</p>
+          </div>
+          <label>Your name</label>
+          <input id="joinName" maxlength="18" placeholder="Enter your name" autocomplete="off" />
+          <label>Room code</label>
+          <input id="roomCode" maxlength="6" placeholder="e.g. 7K29Q" autocomplete="off" class="code-input" />
+          <button class="primary-btn full" id="confirmJoin">Join Room</button>
+          <p class="form-note">Prototype mode: room data is stored only in this browser.</p>
+        </div>
+      </section>
+
+      <section id="lobby" class="screen">
+        <div class="lobby-wrap">
+          <div class="room-header">
+            <div>
+              <span class="eyebrow">PRIVATE ROOM</span>
+              <h2>Room <span id="lobbyCode">7K29Q</span></h2>
+            </div>
+            <button class="secondary-btn" id="copyCode">Copy Code</button>
+          </div>
+          <div class="share-card">
+            <div>
+              <span>Share this code with your friends</span>
+              <strong id="shareCode">7K29Q</strong>
+            </div>
+            <button class="gold-icon" id="shareBtn">↗</button>
+          </div>
+          <div class="players-grid" id="playersGrid"></div>
+          <div class="lobby-footer">
+            <span id="playerCount">1 / 4 players</span>
+            <button class="primary-btn" id="startGame">Start Game</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="screen game-screen">
+        <div class="game-top">
+          <div class="score-box team-a"><span>TEAM A</span><strong id="scoreA">3</strong></div>
+          <div class="round-info">
+            <span id="roundText">Round 1 · Trick 1 / 8</span>
+            <strong id="trumpText">TRUMP — ♠</strong>
+          </div>
+          <div class="score-box team-b"><span>TEAM B</span><strong id="scoreB">2</strong></div>
+        </div>
+
+        <div class="table-area">
+          <div class="player-seat seat-top">
+            <div class="avatar">R</div>
+            <div><strong id="p2Name">Rahul</strong><small>Team B · 4 cards</small></div>
+          </div>
+
+          <div class="player-seat seat-left">
+            <div class="avatar">A</div>
+            <div><strong id="p1Name">Amit</strong><small>Team A · 4 cards</small></div>
+          </div>
+
+          <div class="player-seat seat-right">
+            <div class="avatar">R</div>
+            <div><strong id="p3Name">Raj</strong><small>Team B · 4 cards</small></div>
+          </div>
+
+          <div class="trick-area">
+            <div class="turn-pill" id="turnPill">YOUR TURN</div>
+            <div class="trick-cards" id="trickCards">
+              <div class="empty-trick">Waiting for cards</div>
+            </div>
+          </div>
+
+          <div class="game-center-info">
+            <span>Current Bid</span>
+            <strong id="currentBid">21</strong>
+            <small id="bidderText">Bid by You</small>
+          </div>
+        </div>
+
+        <div class="player-hand-area">
+          <div class="hand-header">
+            <div>
+              <span class="eyebrow">YOUR HAND</span>
+              <strong id="handHint">Choose a card to play</strong>
+            </div>
+            <div class="hand-actions">
+              <button class="icon-btn" id="infoBtn">ⓘ</button>
+              <button class="icon-btn" id="leaveGame">×</button>
+            </div>
+          </div>
+          <div class="hand" id="hand"></div>
+        </div>
+
+        <div class="game-drawer" id="gameDrawer">
+          <div class="drawer-header"><strong>Game Info</strong><button id="closeInfo">×</button></div>
+          <div class="info-grid">
+            <div><span>Team A</span><strong>3 points</strong></div>
+            <div><span>Team B</span><strong>2 points</strong></div>
+            <div><span>Bid</span><strong>21</strong></div>
+            <div><span>Trump</span><strong>♠ Spades</strong></div>
+          </div>
+          <h4>Game History</h4>
+          <div class="history" id="history">
+            <p>Om bid 21</p><p>Rahul passed</p><p>Amit passed</p><p>Raj passed</p>
+          </div>
+        </div>
+
+        <div class="modal hidden" id="bidModal">
+          <div class="modal-card">
+            <button class="modal-close" data-close="bidModal">×</button>
+            <span class="eyebrow">YOUR TURN</span>
+            <h3>Place Your Bid</h3>
+            <p>Current bid: <strong id="modalCurrentBid">20</strong></p>
+            <div class="bid-grid" id="bidGrid"></div>
+            <button class="secondary-btn full" id="passBid">Pass</button>
+          </div>
+        </div>
+
+        <div class="modal hidden" id="trumpModal">
+          <div class="modal-card">
+            <span class="eyebrow">BID WON</span>
+            <h3>Select Trump</h3>
+            <p>Choose the suit that will rule the hand.</p>
+            <div class="suit-grid">
+              <button class="suit-btn red" data-suit="♥">♥<small>Hearts</small></button>
+              <button class="suit-btn" data-suit="♠">♠<small>Spades</small></button>
+              <button class="suit-btn red" data-suit="♦">♦<small>Diamonds</small></button>
+              <button class="suit-btn" data-suit="♣">♣<small>Clubs</small></button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="rules" class="screen">
+        <div class="panel rules-panel">
+          <button class="back-btn" data-screen="home">← Back</button>
+          <div class="section-heading">
+            <span class="eyebrow">HOW TO PLAY</span>
+            <h2>Twenty-Nine Rules</h2>
+            <p>Our first version uses the 6-point game variation.</p>
+          </div>
+          <div class="rules-list">
+            <article><b>01 · The deck</b><p>32 cards: 7, 8, 9, 10, J, Q, K and A in all four suits.</p></article>
+            <article><b>02 · Card ranking</b><p>J &gt; 9 &gt; A &gt; 10 &gt; K &gt; Q &gt; 8 &gt; 7.</p></article>
+            <article><b>03 · Card points</b><p>Jack = 3, Nine = 2, Ace = 1, Ten = 1. Other cards = 0.</p></article>
+            <article><b>04 · Bidding</b><p>After four cards each, bidding starts at 16 and can rise to 28. The highest bidder selects trump.</p></article>
+            <article><b>05 · Tricks</b><p>Players must follow suit when possible. A trump card beats a non-trump card. Eight tricks are played.</p></article>
+            <article><b>06 · Winning</b><p>The declaring team must meet its bid. The first team to reach 6 game points wins.</p></article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
