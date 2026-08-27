@@ -1,234 +1,109 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>29 — The Classic Card Game</title>
-  <meta name="description" content="A premium online Twenty-Nine card game prototype." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Twenty-Nine • Online Card Room</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <header class="topbar">
-      <button class="brand" data-screen="home" aria-label="Go to home">
-        <span class="brand-mark">29</span>
-        <span class="brand-copy">
-          <strong>TWENTY-NINE</strong>
-          <small>THE CLASSIC CARD GAME</small>
-        </span>
-      </button>
-      <div class="top-actions">
-        <button class="ghost-btn" data-screen="rules">Rules</button>
-      </div>
-    </header>
+<div class="app">
+<header class="nav">
+  <div class="brand"><span class="brand-mark">29</span><div><b>TWENTY-NINE</b><small>PRIVATE CARD ROOM</small></div></div>
+  <div class="nav-status"><span id="connectionDot" class="dot offline"></span><span id="connectionText">Offline</span></div>
+</header>
 
-    <main>
-      <section id="home" class="screen active">
-        <div class="hero">
-          <div class="hero-glow"></div>
-          <div class="hero-badge">♠ ♥ ♦ ♣</div>
-          <h1>Twenty-<span>Nine</span></h1>
-          <p>Classic trick-taking. Modern multiplayer.</p>
-          <div class="hero-actions">
-            <button class="primary-btn large" id="createBtn">Create Room</button>
-            <button class="secondary-btn large" id="joinBtn">Join Room</button>
-          </div>
-          <div class="feature-row">
-            <div><b>4</b><span>Players</span></div>
-            <div><b>2v2</b><span>Teams</span></div>
-            <div><b>32</b><span>Cards</span></div>
-            <div><b>6</b><span>Win Points</span></div>
-          </div>
-        </div>
-      </section>
-
-      <section id="create" class="screen">
-        <div class="panel narrow">
-          <button class="back-btn" data-screen="home">← Back</button>
-          <div class="section-heading">
-            <span class="eyebrow">NEW GAME</span>
-            <h2>Create a Room</h2>
-            <p>Set up a private table and invite your friends.</p>
-          </div>
-          <label>Your name</label>
-          <input id="createName" maxlength="18" placeholder="Enter your name" autocomplete="off" />
-          <label>Winning score</label>
-          <select id="winningScore">
-            <option value="6" selected>6 points</option>
-            <option value="8">8 points</option>
-            <option value="10">10 points</option>
-          </select>
-          <button class="primary-btn full" id="confirmCreate">Create Room</button>
-        </div>
-      </section>
-
-      <section id="join" class="screen">
-        <div class="panel narrow">
-          <button class="back-btn" data-screen="home">← Back</button>
-          <div class="section-heading">
-            <span class="eyebrow">PRIVATE TABLE</span>
-            <h2>Join a Room</h2>
-            <p>Enter the code shared by the room host.</p>
-          </div>
-          <label>Your name</label>
-          <input id="joinName" maxlength="18" placeholder="Enter your name" autocomplete="off" />
-          <label>Room code</label>
-          <input id="roomCode" maxlength="6" placeholder="e.g. 7K29Q" autocomplete="off" class="code-input" />
-          <button class="primary-btn full" id="confirmJoin">Join Room</button>
-          <p class="form-note">Prototype mode: room data is stored only in this browser.</p>
-        </div>
-      </section>
-
-      <section id="lobby" class="screen">
-        <div class="lobby-wrap">
-          <div class="room-header">
-            <div>
-              <span class="eyebrow">PRIVATE ROOM</span>
-              <h2>Room <span id="lobbyCode">7K29Q</span></h2>
-            </div>
-            <button class="secondary-btn" id="copyCode">Copy Code</button>
-          </div>
-          <div class="share-card">
-            <div>
-              <span>Share this code with your friends</span>
-              <strong id="shareCode">7K29Q</strong>
-            </div>
-            <button class="gold-icon" id="shareBtn">↗</button>
-          </div>
-          <div class="players-grid" id="playersGrid"></div>
-          <div class="lobby-footer">
-            <span id="playerCount">1 / 4 players</span>
-            <button class="primary-btn" id="startGame">Start Game</button>
-          </div>
-        </div>
-      </section>
-
-      <section id="game" class="screen game-screen">
-        <div class="game-top">
-          <div class="score-box team-a"><span>TEAM A</span><strong id="scoreA">3</strong></div>
-          <div class="round-info">
-            <span id="roundText">Round 1 · Trick 1 / 8</span>
-            <strong id="trumpText">TRUMP — ♠</strong>
-          </div>
-          <div class="score-box team-b"><span>TEAM B</span><strong id="scoreB">2</strong></div>
-        </div>
-
-        <div class="table-area">
-          <div class="player-seat seat-top">
-            <div class="avatar">R</div>
-            <div><strong id="p2Name">Rahul</strong><small>Team B · 4 cards</small></div>
-          </div>
-
-          <div class="player-seat seat-left">
-            <div class="avatar">A</div>
-            <div><strong id="p1Name">Amit</strong><small>Team A · 4 cards</small></div>
-          </div>
-
-          <div class="player-seat seat-right">
-            <div class="avatar">R</div>
-            <div><strong id="p3Name">Raj</strong><small>Team B · 4 cards</small></div>
-          </div>
-
-          <div class="trick-area">
-            <div class="turn-pill" id="turnPill">YOUR TURN</div>
-            <div class="trick-cards" id="trickCards">
-              <div class="empty-trick">Waiting for cards</div>
-            </div>
-          </div>
-
-          <div class="game-center-info">
-            <span>Current Bid</span>
-            <strong id="currentBid">21</strong>
-            <small id="bidderText">Bid by You</small>
-          </div>
-        </div>
-
-        <aside class="chat-panel" id="chatPanel">
-  <div class="chat-header"><div><span class="eyebrow">ROOM CHAT</span><strong>Talk while you play</strong></div><button id="closeChat">×</button></div>
-  <div class="chat-messages" id="chatMessages"><div class="system-message">Welcome to room chat.</div></div>
-  <form class="chat-form" id="chatForm"><input id="chatInput" maxlength="160" placeholder="Type a message…" autocomplete="off"><button>Send</button></form>
-</aside>
-<button class="chat-fab" id="chatFab">💬 <span id="chatBadge">0</span></button>
-<div class="player-hand-area">
-          <div class="hand-header">
-            <div>
-              <span class="eyebrow">YOUR HAND</span>
-              <strong id="handHint">Choose a card to play</strong>
-            </div>
-            <div class="hand-actions">
-              <button class="icon-btn" id="infoBtn">ⓘ</button>
-              <button class="icon-btn" id="leaveGame">×</button>
-            </div>
-          </div>
-          <div class="hand" id="hand"></div>
-        </div>
-
-        <div class="game-drawer" id="gameDrawer">
-          <div class="drawer-header"><strong>Game Info</strong><button id="closeInfo">×</button></div>
-          <div class="info-grid">
-            <div><span>Team A</span><strong>3 points</strong></div>
-            <div><span>Team B</span><strong>2 points</strong></div>
-            <div><span>Bid</span><strong>21</strong></div>
-            <div><span>Trump</span><strong>♠ Spades</strong></div>
-          </div>
-          <h4>Game History</h4>
-          <div class="history" id="history">
-            <p>Om bid 21</p><p>Rahul passed</p><p>Amit passed</p><p>Raj passed</p>
-          </div>
-        </div>
-
-        <div class="modal hidden" id="bidModal">
-          <div class="modal-card">
-            <button class="modal-close" data-close="bidModal">×</button>
-            <span class="eyebrow">YOUR TURN</span>
-            <h3>Place Your Bid</h3>
-            <p>Current bid: <strong id="modalCurrentBid">20</strong></p>
-            <div class="bid-grid" id="bidGrid"></div>
-            <button class="secondary-btn full" id="passBid">Pass</button>
-          </div>
-        </div>
-
-        <div class="modal hidden" id="trumpModal">
-          <div class="modal-card">
-            <span class="eyebrow">BID WON</span>
-            <h3>Select Trump</h3>
-            <p>Choose the suit that will rule the hand.</p>
-            <div class="suit-grid">
-              <button class="suit-btn red" data-suit="♥">♥<small>Hearts</small></button>
-              <button class="suit-btn" data-suit="♠">♠<small>Spades</small></button>
-              <button class="suit-btn red" data-suit="♦">♦<small>Diamonds</small></button>
-              <button class="suit-btn" data-suit="♣">♣<small>Clubs</small></button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="rules" class="screen">
-        <div class="panel rules-panel">
-          <button class="back-btn" data-screen="home">← Back</button>
-          <div class="section-heading">
-            <span class="eyebrow">HOW TO PLAY</span>
-            <h2>Twenty-Nine Rules</h2>
-            <p>Our first version uses the 6-point game variation.</p>
-          </div>
-          <div class="rules-list">
-            <article><b>01 · The deck</b><p>32 cards: 7, 8, 9, 10, J, Q, K and A in all four suits.</p></article>
-            <article><b>02 · Card ranking</b><p>J &gt; 9 &gt; A &gt; 10 &gt; K &gt; Q &gt; 8 &gt; 7.</p></article>
-            <article><b>03 · Card points</b><p>Jack = 3, Nine = 2, Ace = 1, Ten = 1. Other cards = 0.</p></article>
-            <article><b>04 · Bidding</b><p>After four cards each, bidding starts at 16 and can rise to 28. The highest bidder selects trump.</p></article>
-            <article><b>05 · Tricks</b><p>Players must follow suit when possible. A trump card beats a non-trump card. Eight tricks are played.</p></article>
-            <article><b>06 · Winning</b><p>The declaring team must meet its bid. The first team to reach 6 game points wins.</p></article>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <div class="toast" id="toast"></div>
+<main>
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="eyebrow">4 PLAYER • 2 TEAMS • TRICK-TAKING</div>
+    <h1>Play <em>Twenty-Nine</em><br>with your friends.</h1>
+    <p>Create a private room, share one code, and play the full 29-card game in real time.</p>
+    <div class="home-actions"><button class="gold-btn" id="createBtn">Create Room</button><button class="dark-btn" id="joinBtn">Join Room</button></div>
+    <div class="feature-row"><span>32-card deck</span><span>Live bidding</span><span>Real-time chat</span><span>Server-validated moves</span></div>
   </div>
-  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+</section>
+
+<section id="create" class="screen">
+  <div class="panel">
+    <button class="back" data-screen="home">← Back</button>
+    <div class="eyebrow">NEW PRIVATE ROOM</div><h2>Create a Room</h2><p>Choose your name and match target.</p>
+    <label>Your name</label><input id="createName" maxlength="18" placeholder="e.g. Om">
+    <label>Winning game points</label><select id="winningScore"><option value="6">6 points</option><option value="8">8 points</option><option value="10">10 points</option></select>
+    <button class="gold-btn full" id="confirmCreate">Create Room</button>
+  </div>
+</section>
+
+<section id="join" class="screen">
+  <div class="panel">
+    <button class="back" data-screen="home">← Back</button>
+    <div class="eyebrow">PRIVATE ROOM</div><h2>Join a Room</h2><p>Enter the code shared by the host.</p>
+    <label>Your name</label><input id="joinName" maxlength="18" placeholder="e.g. Rahul">
+    <label>Room code</label><input id="joinCode" maxlength="5" class="room-input" placeholder="A7K2P">
+    <button class="gold-btn full" id="confirmJoin">Join Room</button>
+  </div>
+</section>
+
+<section id="lobby" class="screen">
+  <div class="lobby">
+    <div class="lobby-top"><div><div class="eyebrow">PRIVATE TABLE</div><h2>Room <span id="lobbyCode">-----</span></h2></div><button class="dark-btn" id="copyCode">Copy Code</button></div>
+    <div class="invite"><div><small>SHARE THIS CODE</small><strong id="shareCode">-----</strong></div><button id="shareBtn">Share ↗</button></div>
+    <div class="team-note">Seat order decides teams: <b>Seats 1 + 3 = Team A</b> · <b>Seats 2 + 4 = Team B</b></div>
+    <div id="playersGrid" class="players"></div>
+    <div class="lobby-bottom"><span id="playerCount">0 / 4</span><button id="startGame" class="gold-btn">Start Game</button></div>
+  </div>
+</section>
+
+<section id="game" class="screen game-screen">
+  <div class="gamebar">
+    <div class="team-score"><small>TEAM A</small><b id="scoreA">0</b><span>/ <i id="targetScore">6</i></span></div>
+    <div class="game-meta"><b id="phaseText">BIDDING</b><span id="roundText">Hand 1 · 4 cards</span></div>
+    <div class="team-score right"><small>TEAM B</small><b id="scoreB">0</b><span>/ <i id="targetScoreB">6</i></span></div>
+  </div>
+
+  <div class="table">
+    <div class="seat top"><div class="avatar" id="topAvatar">?</div><div><b id="topName">Waiting</b><small id="topInfo">Team B</small></div></div>
+    <div class="seat left"><div class="avatar" id="leftAvatar">?</div><div><b id="leftName">Waiting</b><small id="leftInfo">Team A</small></div></div>
+    <div class="seat right"><div class="avatar" id="rightAvatar">?</div><div><b id="rightName">Waiting</b><small id="rightInfo">Team B</small></div></div>
+
+    <div class="center">
+      <div class="badges"><span id="turnPill">WAITING</span><span id="trumpPill">TRUMP — HIDDEN</span></div>
+      <div id="trick" class="trick"><span class="empty">No cards in trick</span></div>
+      <div class="bid-readout"><small>HIGHEST BID</small><b id="bidValue">—</b><span id="bidderValue">No bid yet</span></div>
+    </div>
+  </div>
+
+  <div class="bottom">
+    <div class="hand-title"><div><div class="eyebrow">YOUR HAND</div><b id="handHint">Waiting…</b></div><div class="bottom-actions"><button id="infoBtn" class="round-btn">ⓘ</button><button id="chatFab" class="round-btn">💬 <span id="chatBadge">0</span></button></div></div>
+    <div id="hand" class="hand"></div>
+  </div>
+
+  <aside id="chatPanel" class="chat">
+    <div class="chat-head"><div><div class="eyebrow">ROOM CHAT</div><b>Talk while you play</b></div><button id="closeChat">×</button></div>
+    <div id="chatMessages" class="messages"></div>
+    <form id="chatForm"><input id="chatInput" maxlength="160" placeholder="Type a message…"><button>Send</button></form>
+  </aside>
+
+  <aside id="infoPanel" class="drawer">
+    <div class="drawer-head"><b>Game Information</b><button id="closeInfo">×</button></div>
+    <div class="info-cards"><div><small>TRUMP</small><b id="infoTrump">Hidden</b></div><div><small>BID</small><b id="infoBid">—</b></div><div><small>TRICKS</small><b id="infoTricks">0 / 8</b></div><div><small>MODE</small><b>6-point match</b></div></div>
+    <h4>Game History</h4><div id="history" class="history"></div>
+  </aside>
+
+  <div id="bidModal" class="modal hidden">
+    <div class="modal-card"><div class="eyebrow">BIDDING</div><h3>Place your bid</h3><p>Current bid: <b id="modalBid">15</b>. Minimum next bid is <b id="modalMin">16</b>.</p><div id="bidGrid" class="bid-grid"></div><button id="passBtn" class="dark-btn full">Pass</button></div>
+  </div>
+  <div id="trumpModal" class="modal hidden">
+    <div class="modal-card"><div class="eyebrow">BID WON</div><h3>Choose Trump</h3><p>You won the bidding. Select a suit.</p><div class="suits"><button data-suit="♥" class="red">♥<small>Hearts</small></button><button data-suit="♠">♠<small>Spades</small></button><button data-suit="♦" class="red">♦<small>Diamonds</small></button><button data-suit="♣">♣<small>Clubs</small></button></div><button id="peekBtn" class="dark-btn full peek">Peek at the 7th card (optional)</button><p id="peekResult" class="peek-result"></p></div>
+  </div>
+  <div id="handResult" class="modal hidden"><div class="modal-card"><div class="eyebrow">HAND COMPLETE</div><h3 id="resultTitle">Hand Result</h3><p id="resultText"></p><div class="result-score"><span>Team A <b id="resultA">0</b></span><span>Team B <b id="resultB">0</b></span></div><button id="nextHandBtn" class="gold-btn full">Continue</button></div></div>
+  <div id="matchResult" class="modal hidden"><div class="modal-card"><div class="eyebrow">MATCH COMPLETE</div><h3 id="winnerTitle">🏆 Winner</h3><p id="winnerText"></p><button id="backLobbyBtn" class="gold-btn full">Back to Lobby</button></div></div>
+</section>
+
+<section id="rules" class="screen"><div class="panel wide"><button class="back" data-screen="home">← Back</button><div class="eyebrow">HOW TO PLAY</div><h2>Twenty-Nine Rules</h2><div class="rules"><article><b>01 · Deck</b><p>32 cards: 7, 8, 9, 10, J, Q, K and A in all four suits.</p></article><article><b>02 · Ranking</b><p>J &gt; 9 &gt; A &gt; 10 &gt; K &gt; Q &gt; 8 &gt; 7.</p></article><article><b>03 · Points</b><p>J = 3, 9 = 2, A = 1, 10 = 1. K, Q, 8, 7 = 0. Last trick adds 1.</p></article><article><b>04 · Bidding</b><p>Four cards are dealt first. Bidding starts at 16 and rises to 28. Three consecutive passes end bidding. Highest bidder chooses trump.</p></article><article><b>05 · Tricks</b><p>After the second deal each player has 8 cards. Follow the led suit if you can. A trump beats a non-trump suit. Highest valid card wins the trick.</p></article><article><b>06 · Scoring</b><p>The declaring team must meet its bid. If it does, it gains 1 game point; if it fails, it loses 1 game point. The first team to the selected target wins.</p></article><article><b>07 · Optional 7th-card peek</b><p>The bidder may reveal the reserved 7th card before choosing trump. If that suit is selected, the hand is marked as a peek hand; a failed bid carries the double-loss penalty.</p></article></div></div></section>
+</main>
+<div id="toast" class="toast"></div>
+<script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
