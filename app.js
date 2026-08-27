@@ -1,4 +1,4 @@
-const SERVER_URL=window.GAME_SERVER_URL||"http://localhost:3000";
+const SERVER_URL="https://cards-29-server.onrender.com";
 const state={screen:"home",playerName:"Player",roomCode:"",roomId:"",players:[],winningScore:6,socket:null,hand:[["J","♠"],["9","♠"],["A","♥"],["10","♥"],["K","♦"],["Q","♦"],["8","♣"],["7","♣"]],trick:[],turn:true,scoreA:0,scoreB:0,currentBid:15,trump:"—",history:[],chat:[],unread:0};
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
